@@ -1,0 +1,17 @@
+node_modules
+
+# CERT
+cert/**
+!.gitkeep
+
+# DIST
+dist
+*.log
+
+# PRISMA
+prisma/db
+prisma/migrations
+
+
+# ENVIRONMENT
+.env

@@ -1,22 +1,9 @@
-import Router from 'express-promise-router';
-
-import * as VerifyUserMiddleware from './auth.verify.middleware';
-import * as AuthController from './auth.controller';
-import * as AuthValidationMiddleware from '../common/middlewares/auth.validation.middleware';
+import { Request, Response, Router } from "express";
+import AuthHandler from "./auth.handler";
 
 const router = Router();
 
-router.post('/token', [
-  VerifyUserMiddleware.hasAuthValidFields,
-  VerifyUserMiddleware.userAndKeyHasMatch,
-  AuthController.login
-]);
-
-router.post('/refresh', [
-  AuthValidationMiddleware.requireValidJwt,
-  AuthValidationMiddleware.verifyRefreshBodyField,
-  AuthValidationMiddleware.requireValidRefresh,
-  AuthController.login
-]);
+router.post("/login", AuthHandler.IssueNewAuthToken);
+router.get("/refresh", AuthHandler.RefreshAuth);
 
 export default router;
