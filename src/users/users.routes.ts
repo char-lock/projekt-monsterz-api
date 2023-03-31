@@ -11,10 +11,11 @@ logger.defaultMeta = { source: "projekt_monsterz::api::UsersRoute" };
 const router = Router();
 
 router.get("/", (req, res) => { res.status(200).send("User endpoint working"); });
-router.get("/id/:userId", [AuthMiddleware, UsersHandler.GetUserById]);
+router.get("/id/:userId", [UsersHandler.GetUserById]);
 router.delete("/id/:userId", [AuthMiddleware, UsersHandler.DeleteUserById]);
-router.get("/username/:username", [AuthMiddleware, UsersHandler.GetUserByUsername]);
+router.get("/username/:username", [UsersHandler.GetUserByUsername]);
 router.post("/", (req, res) => {
+  logger.debug(JSON.stringify(req.body));
   const salt = crypto.randomBytes(8).toString("hex");
   const cleartext = `${salt}${req.body.username}${req.body.auth_key}`;
   crypto.pbkdf2(cleartext, salt, 310000, 32, "sha256", (err, hashed) => {

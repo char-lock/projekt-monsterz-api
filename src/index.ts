@@ -21,12 +21,14 @@ import { json } from "body-parser";
 import express, { Router } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import cors from "cors";
 
 import { parseBoolean } from "./shared/util";
 import baseLogger from "./shared/logger";
 
 import authRouter from "./auth/auth.routes";
 import usersRouter from "./users/users.routes";
+import leaderboardRouter from "./leaderboard/leaderboard.routes";
 
 const logger = baseLogger.child({});
 logger.defaultMeta = { source: "projekt_monsterz::api" };
@@ -39,13 +41,15 @@ const morganStream = {
 
 const app = express();
 app.use(morgan("combined", { stream: morganStream }));
-app.use(helmet());
+app.use(helmet({ }));
 app.use(json());
+app.use(cors({ "origin": "http://localhost:4200" }));
 
 const router = Router();
 router.get("/", (req, res) => { res.status(200).send("Connected"); });
 router.use("/user", usersRouter);
 router.use("/auth", authRouter);
+router.use("/leaderboard", leaderboardRouter);
 
 app.use(router);
 

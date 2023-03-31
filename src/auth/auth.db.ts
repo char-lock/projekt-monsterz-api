@@ -1,6 +1,7 @@
 import { Auth, PrismaClient } from "@prisma/client";
 
 export default class AuthDataBus {
+
   static prisma = new PrismaClient();
 
   static async InsertAuth(userAuth: Auth) {
@@ -14,4 +15,5 @@ export default class AuthDataBus {
   static async DeleteAuthById(userId: number) {
     return await this.prisma.auth.findFirstOrThrow( { where: { user_id: userId } });
   }
+
 }
